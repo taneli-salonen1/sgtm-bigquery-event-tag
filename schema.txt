@@ -1,0 +1,51 @@
+[
+    {
+        "description": "Event timestamp in milliseconds",
+        "mode": "REQUIRED",
+        "name": "timestamp",
+        "type": "INTEGER"
+    },
+    {
+        "description": "Name of the event",
+        "mode": "REQUIRED",
+        "name": "event_name",
+        "type": "STRING"
+    },
+    {
+        "description": "Event data fields",
+        "mode": "REPEATED",
+        "name": "event_data",
+        "type": "RECORD",
+        "fields": [
+            {
+                "description": "Field name",
+                "mode": "NULLABLE",
+                "name": "key",
+                "type": "STRING"
+            },
+            {
+                "mode": "NULLABLE",
+                "name": "value",
+                "type": "RECORD",
+                "fields": [
+                    {
+                        "name": "string_value",
+                        "type": "STRING",
+                        "mode": "NULLABLE"
+                    },
+                    {
+                        "name": "int_value",
+                        "type": "INTEGER",
+                        "mode": "NULLABLE"
+                    },
+                    {
+                        "name": "float_value",
+                        "type": "FLOAT",
+                        "mode": "NULLABLE"
+                    }
+                ]
+            }
+
+        ]
+    }
+]
