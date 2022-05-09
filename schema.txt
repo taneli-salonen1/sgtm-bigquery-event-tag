@@ -7,23 +7,24 @@
     },
     {
         "description": "Name of the event",
-        "mode": "REQUIRED",
+        "mode": "NULLABLE",
         "name": "event_name",
         "type": "STRING"
     },
     {
-        "description": "Event data fields",
+        "description": "Event data parameters and their values",
         "mode": "REPEATED",
-        "name": "event_data",
+        "name": "event_params",
         "type": "RECORD",
         "fields": [
             {
-                "description": "Field name",
+                "description": "Parameter name",
                 "mode": "NULLABLE",
                 "name": "key",
                 "type": "STRING"
             },
             {
+                "description": "Value stored in one of the record's fields",
                 "mode": "NULLABLE",
                 "name": "value",
                 "type": "RECORD",
