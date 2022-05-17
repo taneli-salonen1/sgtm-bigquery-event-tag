@@ -15,11 +15,14 @@ ___INFO___
   "securityGroups": [],
   "displayName": "BigQuery Event",
   "brand": {
-    "id": "brand_dummy",
-    "displayName": ""
+    "id": "github.com_taneli-salonen1",
+    "displayName": "taneli-salonen1"
   },
-  "categories": ["ANALYTICS", "DATA_WAREHOUSING"],
-  "description": "Send events to BigQuery using the Streaming Insert API. The table schema configuration can be found from the tag\u0027s GitHub page.",
+  "categories": [
+    "ANALYTICS",
+    "DATA_WAREHOUSING"
+  ],
+  "description": "Send events to BigQuery using the Streaming Insert API. The table schema configuration can be found from the tag\u0027s GitHub page: https://github.com/taneli-salonen1/sgtm-bigquery-event-tag",
   "containerContexts": [
     "SERVER"
   ]
