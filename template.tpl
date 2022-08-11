@@ -114,6 +114,11 @@ ___TEMPLATE_PARAMETERS___
     "help": "Set the key name and key value for each event data field. Object data types will be converted to string.",
     "alwaysInSummary": true,
     "newRowButtonText": "New parameter"
+  },
+  {
+    "type": "LABEL",
+    "name": "bqSchemaLink",
+    "displayName": "The required BigQuery table schema can be found from: https://github.com/taneli-salonen1/sgtm-bigquery-event-tag/blob/main/schema.txt"
   }
 ]
 
@@ -135,6 +140,9 @@ const identifyDataType = (fieldValue) => {
     return makeInteger(fieldValue) === fieldValue ? 'int_value' : 'float_value';
   } else if (fieldType === 'object') {
     return 'string_value';
+  } else if (fieldType === 'boolean') {
+    // save boolean values as integers
+    return 'int_value';
   }
 };
 
@@ -142,6 +150,9 @@ const changeDataType = (fieldValue) => {
   // convert objects to a string
   if (typeof fieldValue === 'object' && fieldValue !== null) {
     return JSON.stringify(fieldValue);
+  } else if (typeof fieldValue === 'boolean') {
+    // convert booleans to integer
+    return fieldValue ? 1 : 0;
   }
   return fieldValue;
 };
