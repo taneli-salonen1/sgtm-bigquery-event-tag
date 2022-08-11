@@ -2,8 +2,10 @@ homepage: "https://tanelytics.com"
 documentation: "https://github.com/taneli-salonen1/sgtm-bigquery-event-tag"
 versions:
   # Latest version
+  - sha: f362e3c23792c6a3e1ea25bb9a94f0a04071b5e4
+    changeNotes: Convert boolean values to integers and save to the int_value event_param field
+  # Older versions
   - sha: 4912e37dbb98ffa2a59a83a989768c5b4856ef8f
     changeNotes: Documentation
-  # Older versions
   - sha: 80ef8fb777922db9ba1a34905fdac06c8921fe36
     changeNotes: First version
