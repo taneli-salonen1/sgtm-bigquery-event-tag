@@ -12,6 +12,24 @@
         "type": "STRING"
     },
     {
+        "description": "User identifier",
+        "mode": "NULLABLE",
+        "name": "user_id",
+        "type": "STRING"
+    },
+    {
+        "description": "Device-based identifier",
+        "mode": "NULLABLE",
+        "name": "device_id",
+        "type": "STRING"
+    },
+    {
+        "description": "Session identifier",
+        "mode": "NULLABLE",
+        "name": "session_id",
+        "type": "STRING"
+    },
+    {
         "description": "Event data parameters and their values",
         "mode": "REPEATED",
         "name": "event_params",

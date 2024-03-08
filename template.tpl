@@ -76,8 +76,32 @@ ___TEMPLATE_PARAMETERS___
   },
   {
     "type": "TEXT",
+    "name": "user_id",
+    "displayName": "User Id",
+    "simpleValueType": true,
+    "alwaysInSummary": true,
+    "help": "Writes the id in the \u003cstrong\u003euser_id\u003c/strong\u003e string field."
+  },
+  {
+    "type": "TEXT",
+    "name": "device_id",
+    "displayName": "Device Id",
+    "simpleValueType": true,
+    "alwaysInSummary": true,
+    "help": "Writes the id in the \u003cstrong\u003edevice_id\u003c/strong\u003e string field."
+  },
+  {
+    "type": "TEXT",
+    "name": "session_id",
+    "displayName": "Session Id",
+    "simpleValueType": true,
+    "alwaysInSummary": true,
+    "help": "Writes the id in the \u003cstrong\u003esession_id\u003c/strong\u003e string field."
+  },
+  {
+    "type": "TEXT",
     "name": "eventName",
-    "displayName": "Event name",
+    "displayName": "Event Name",
     "simpleValueType": true,
     "alwaysInSummary": true
   },
@@ -128,8 +152,10 @@ ___SANDBOXED_JS_FOR_SERVER___
 const log = require('logToConsole');
 const BigQuery = require('BigQuery');
 const makeInteger = require('makeInteger');
+const makeString = require('makeString');
 const JSON = require('JSON');
 const getTimestampMillis = require('getTimestampMillis');
+const getType = require('getType');
 
 const identifyDataType = (fieldValue) => {
   const fieldType = typeof fieldValue;
@@ -157,9 +183,20 @@ const changeDataType = (fieldValue) => {
   return fieldValue;
 };
 
+// convert identifiers to strings
+const convertToString = (fieldValue) => {
+  if (getType(fieldValue) === 'null' || getType(fieldValue) === 'undefined') {
+    return;
+  }
+  return makeString(fieldValue);
+};
+
 const row = {
   timestamp: getTimestampMillis(),
   event_name: data.eventName,
+  user_id: convertToString(data.user_id),
+  device_id: convertToString(data.device_id),
+  session_id: convertToString(data.session_id),
   event_params: []
 };
 

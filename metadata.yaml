@@ -1,5 +1,5 @@
 homepage: "https://tanelytics.com"
-documentation: "https://github.com/taneli-salonen1/sgtm-bigquery-event-tag"
+documentation: "https://tanelytics.com/send-events-from-server-side-tag-manager-to-bigquery/"
 versions:
   # Latest version
   - sha: f362e3c23792c6a3e1ea25bb9a94f0a04071b5e4
