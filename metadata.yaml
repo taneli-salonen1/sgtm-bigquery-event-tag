@@ -2,9 +2,11 @@ homepage: "https://tanelytics.com"
 documentation: "https://tanelytics.com/send-events-from-server-side-tag-manager-to-bigquery/"
 versions:
   # Latest version
+  - sha: b4d3ea19dc6aaadbd1720fd15e96efd2371bb389
+    changeNotes: Add user_id, device_id, and session_id fields. Sending them requires a schema change. See GitHub repository.
+  # Older versions
   - sha: f362e3c23792c6a3e1ea25bb9a94f0a04071b5e4
     changeNotes: Convert boolean values to integers and save to the int_value event_param field
-  # Older versions
   - sha: 4912e37dbb98ffa2a59a83a989768c5b4856ef8f
     changeNotes: Documentation
   - sha: 80ef8fb777922db9ba1a34905fdac06c8921fe36
