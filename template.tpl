@@ -140,6 +140,12 @@ ___TEMPLATE_PARAMETERS___
     "newRowButtonText": "New parameter"
   },
   {
+    "type": "CHECKBOX",
+    "name": "excludeEmptyParams",
+    "checkboxText": "Exclude params with a null or undefined value from the outgoing event.",
+    "simpleValueType": true
+  },
+  {
     "type": "LABEL",
     "name": "bqSchemaLink",
     "displayName": "The required BigQuery table schema can be found from: https://github.com/taneli-salonen1/sgtm-bigquery-event-tag/blob/main/schema.txt"
@@ -209,10 +215,14 @@ if (data.eventDataFields && data.eventDataFields.length > 0) {
       value: {
       }
     };
-
-    val.value[identifyDataType(field.value)] = changeDataType(field.value);
-
-    row.event_params.push(val);
+    
+    const fieldDataType = identifyDataType(field.value);
+    const excludedRow = data.excludeEmptyParams === true && getType(fieldDataType) === 'undefined';
+    
+    if (!excludedRow) {
+      val.value[fieldDataType] = changeDataType(field.value);
+      row.event_params.push(val);
+    }
   });
 }
 
@@ -323,7 +333,6 @@ scenarios:
 - name: Untitled test 2
   code: |-
     const mockData = {
-      bqProject: 'asdf',
       bqDataset: 'asdf',
       bqTable: 'test',
       eventDataFields:[
