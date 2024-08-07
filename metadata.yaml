@@ -2,9 +2,11 @@ homepage: "https://tanelytics.com"
 documentation: "https://tanelytics.com/send-events-from-server-side-tag-manager-to-bigquery/"
 versions:
   # Latest version
+  - sha: 08b627148c791fa34507cf92191b0c01e57dc61c
+    changeNotes: Allow providing event params as a JSON object instead of listing them one by one.
+  # Older versions
   - sha: 67e64aec7b5394b35158f9e1a3d3f3da8f7e245b
     changeNotes: Add option to exclude event params with an undefined or null value from the outgoing event.
-  # Older versions
   - sha: b4d3ea19dc6aaadbd1720fd15e96efd2371bb389
     changeNotes: Add user_id, device_id, and session_id fields. Sending them requires a schema change. See GitHub repository.
   - sha: f362e3c23792c6a3e1ea25bb9a94f0a04071b5e4
