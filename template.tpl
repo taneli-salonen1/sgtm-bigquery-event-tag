@@ -141,6 +141,25 @@ ___TEMPLATE_PARAMETERS___
   },
   {
     "type": "CHECKBOX",
+    "name": "readFromObject",
+    "checkboxText": "Extract event params from an object",
+    "simpleValueType": true,
+    "help": "Extract event parameters from the provided JSON object.\u003cbr /\u003e\u003cbr /\u003eFor example:\u003cbr /\u003e\u003cstrong\u003e{\u003cbr /\u003eparam1: 1,\u003cbr /\u003eparam2: false\u003cbr /\u003e}\u003c/strong\u003e"
+  },
+  {
+    "type": "TEXT",
+    "name": "paramsObject",
+    "simpleValueType": true,
+    "enablingConditions": [
+      {
+        "paramName": "readFromObject",
+        "paramValue": true,
+        "type": "EQUALS"
+      }
+    ]
+  },
+  {
+    "type": "CHECKBOX",
     "name": "excludeEmptyParams",
     "checkboxText": "Exclude params with a null or undefined value from the outgoing event.",
     "simpleValueType": true
@@ -162,6 +181,7 @@ const makeString = require('makeString');
 const JSON = require('JSON');
 const getTimestampMillis = require('getTimestampMillis');
 const getType = require('getType');
+const Object = require('Object');
 
 const identifyDataType = (fieldValue) => {
   const fieldType = typeof fieldValue;
@@ -206,25 +226,42 @@ const row = {
   event_params: []
 };
 
-
 // Transform the event data fields to the BigQuery event schema
-if (data.eventDataFields && data.eventDataFields.length > 0) {
-  data.eventDataFields.forEach(field => {
-    const val = {
-      key: field.key,
-      value: {
+const extractEventParams = (eventDataFields) => {
+  if (getType(eventDataFields) === 'array' && eventDataFields.length > 0) {
+    eventDataFields.forEach(field => {
+      const val = {
+        key: field.key,
+        value: {
+        }
+      };
+
+      const fieldDataType = identifyDataType(field.value);
+      const excludedRow = data.excludeEmptyParams === true && 
+            (getType(field.value) === 'undefined' || getType(field.value) === 'null');
+
+      if (!excludedRow) {
+        val.value[fieldDataType] = changeDataType(field.value);
+        row.event_params.push(val);
       }
+    });
+  }
+};
+
+// extract the event parameters from a JSON object, if provided
+if (data.readFromObject && getType(data.paramsObject) === 'object') {
+  const paramsObjectKeyValues = Object.entries(data.paramsObject).map(entry => {
+    return {
+      key: entry[0],
+      value: entry[1]
     };
-    
-    const fieldDataType = identifyDataType(field.value);
-    const excludedRow = data.excludeEmptyParams === true && getType(fieldDataType) === 'undefined';
-    
-    if (!excludedRow) {
-      val.value[fieldDataType] = changeDataType(field.value);
-      row.event_params.push(val);
-    }
   });
+  
+  extractEventParams(paramsObjectKeyValues);
 }
+
+// extract the inputted event params
+extractEventParams(data.eventDataFields);
 
 const connectionInfo = {
   projectId: data.bqProject,
