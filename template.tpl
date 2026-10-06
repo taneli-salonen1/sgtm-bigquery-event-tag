@@ -273,7 +273,11 @@ const options = {
   ignoreUnknownValues: true
 };
 
-BigQuery.insert(connectionInfo, [row], options, data.gtmOnSuccess(), data.gtmOnFailure());
+BigQuery.insert(connectionInfo, [row], options)
+  .then(data.gtmOnSuccess, (err) => {
+    log('BigQuery insert failed:', err);
+    data.gtmOnFailure();
+  });
 
 
 ___SERVER_PERMISSIONS___
@@ -367,27 +371,40 @@ ___SERVER_PERMISSIONS___
 ___TESTS___
 
 scenarios:
-- name: Untitled test 2
+- name: Insert succeeds
   code: |-
-    const mockData = {
-      bqDataset: 'asdf',
-      bqTable: 'test',
-      eventDataFields:[
-        {"key":"page_location","value":"test"},
-        {"key":"session_id","value":12345}
-      ]
-    };
+    mock('BigQuery', {
+      insert: () => Promise.create((resolve) => resolve())
+    });
 
-    // Call runCode to run the template's code.
     runCode(mockData);
 
-    // Verify that the tag finished successfully.
     assertApi('gtmOnSuccess').wasCalled();
+    assertApi('gtmOnFailure').wasNotCalled();
+- name: Insert fails
+  code: |-
+    mock('BigQuery', {
+      insert: () => Promise.create((resolve, reject) => reject({reason: 'invalid'}))
+    });
+
+    runCode(mockData);
+
+    assertApi('gtmOnFailure').wasCalled();
+    assertApi('gtmOnSuccess').wasNotCalled();
 setup: |-
   const log = require('logToConsole');
   const makeInteger = require('makeInteger');
   const JSON = require('JSON');
+  const Promise = require('Promise');
 
+  const mockData = {
+    bqDataset: 'asdf',
+    bqTable: 'test',
+    eventDataFields:[
+      {"key":"page_location","value":"test"},
+      {"key":"session_id","value":12345}
+    ]
+  };
 
   const testEventData = {"x-ga-protocol_version":"2","x-ga-measurement_id":"G-FBVKWPGDPE","x-ga-gtm_version":"2re540","x-ga-page_id":1940542384,"x-ga-system_properties":{"z":"ccd.tbB","eu":"Q"},"x-ga-mp2-tt":"internal_cookie","client_id":"ZDoa3Sn32zo3RN66kguVogdtbQB1xZr/EBDR9gylXKA=.1647778941","language":"en","screen_resolution":"1536x960","x-ga-mp2-ir":"1","x-ga-request_count":1,"ga_session_id":"1652075867","ga_session_number":18,"x-ga-mp2-seg":"1","page_location":"https://tanelytics.com/ip-filtering-in-server-side-gtm/","page_referrer":"https://tanelytics.com/?internalTraffic=1","page_title":"IP Filtering in Server-side Tag Manager - tanelytics.com","event_name":"page_view","engagement_time_msec":1,"page_type":"post","page_post_id":237.1,"page_post_date":"2022-05-05","page_post_category":"ga4,server-side-tag-manager","page_post_tags1":"ga4,server-side-gtm","page_type2":"single-post","custom_timestamp":1652077511712,"x-ga-mp2-user_properties":{"_npa":"1"},"x-ga-mp2-richsstsse":"","ip_override":"80.221.59.110","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36","x-ga-js_client_id":"2024456455.1647778941"};
 
