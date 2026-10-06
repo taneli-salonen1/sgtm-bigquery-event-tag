@@ -2,7 +2,7 @@ homepage: "https://tanelytics.com"
 documentation: "https://tanelytics.com/send-events-from-server-side-tag-manager-to-bigquery/"
 versions:
   # Latest version
-  - sha: 63b54ba1bd423f00c1d8bb368a27c34c6c83f378
+  - sha: 810ac21e565c658f44a634c90cba28f2ac1f15a9
     changeNotes: "Fix: the tag now waits for the BigQuery insert and reports failure when it fails (previously it always reported success)."
   # Older versions
   - sha: 08b627148c791fa34507cf92191b0c01e57dc61c
