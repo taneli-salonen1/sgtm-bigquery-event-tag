@@ -2,9 +2,11 @@ homepage: "https://tanelytics.com"
 documentation: "https://tanelytics.com/send-events-from-server-side-tag-manager-to-bigquery/"
 versions:
   # Latest version
+  - sha: 63b54ba1bd423f00c1d8bb368a27c34c6c83f378
+    changeNotes: "Fix: the tag now waits for the BigQuery insert and reports failure when it fails (previously it always reported success)."
+  # Older versions
   - sha: 08b627148c791fa34507cf92191b0c01e57dc61c
     changeNotes: Allow providing event params as a JSON object instead of listing them one by one.
-  # Older versions
   - sha: 67e64aec7b5394b35158f9e1a3d3f3da8f7e245b
     changeNotes: Add option to exclude event params with an undefined or null value from the outgoing event.
   - sha: b4d3ea19dc6aaadbd1720fd15e96efd2371bb389
