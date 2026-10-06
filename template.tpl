@@ -373,8 +373,9 @@ ___TESTS___
 scenarios:
 - name: Insert succeeds
   code: |-
-    mock('BigQuery', {
-      insert: () => Promise.create((resolve) => resolve())
+    mockObject('BigQuery', {
+      // Synchronous thenable: a real Promise resolves after the assertions run
+      insert: () => ({ then: (onSuccess) => onSuccess() })
     });
 
     runCode(mockData);
@@ -383,8 +384,8 @@ scenarios:
     assertApi('gtmOnFailure').wasNotCalled();
 - name: Insert fails
   code: |-
-    mock('BigQuery', {
-      insert: () => Promise.create((resolve, reject) => reject({reason: 'invalid'}))
+    mockObject('BigQuery', {
+      insert: () => ({ then: (onSuccess, onFailure) => onFailure({reason: 'invalid'}) })
     });
 
     runCode(mockData);
@@ -395,7 +396,6 @@ setup: |-
   const log = require('logToConsole');
   const makeInteger = require('makeInteger');
   const JSON = require('JSON');
-  const Promise = require('Promise');
 
   const mockData = {
     bqDataset: 'asdf',
